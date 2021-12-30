@@ -61,7 +61,7 @@ def plotly_Plot_RSA(ticker, df, OHLC_ColName, RSIColName, height=680,width=800, 
     ), row=2, col=1)
 
 
-    if RSA_Mthd == 'SMA':
+    if RSA_Mthd == 'SMA' or RSA_Mthd == 'EWA':
         fig.add_hline(y=20, annotation_text="RSI = 20", annotation_position="bottom right",
               line_width=2, line_dash="dash", line_color="red", row=2,col=1)
         fig.add_hline(y=80, annotation_text="RSI = 80", annotation_position="bottom right",
