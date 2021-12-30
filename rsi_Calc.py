@@ -7,6 +7,7 @@ https://www.linkedin.com/in/richardchai/
 """
 
 import pandas as pd
+import math
 import streamlit as st
 
 @st.cache
@@ -46,10 +47,12 @@ def RSI_Calc(df_OHLC, colName, method="SMA", window = 14):
         average_gain = positive.rolling(window=window).mean()
         average_loss = abs(negative.rolling(window=window).mean())
     elif method == 'EWA':
-        average_gain = positive.ewm(span=window).mean()
-        average_loss = negative.ewm(span=window).mean()
+        average_gain = positive.ewm(span=window-1, adjust=False).mean()
+        average_loss = abs(negative.ewm(span=window-1, adjust=False).mean())
 
     relative_strength = average_gain / average_loss
+    relative_strength = relative_strength.apply(lambda x: 1 if math.isinf(x) else x)
+    relative_strength = relative_strength.apply(lambda x: 1 if math.isnan(x) else x)
 
     # RSI = 100.0 - (100.0 / (1.0 + relative_strength))    
     # create a new column for RSI and return the df
